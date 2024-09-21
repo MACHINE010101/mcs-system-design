@@ -1,9 +1,11 @@
 import pika, json, tempfile, os
 from bson.objectid import ObjectId
+import logging
 import moviepy.editor
 
 
 def start(message, fs_videos, fs_mp3s, channel):
+    logging.info("Converting video to mp3..")
     message = json.loads(message)
 
     # empty temp file
