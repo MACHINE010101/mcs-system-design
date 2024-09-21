@@ -1,11 +1,13 @@
 import pika, json
-
+import logging
 import pika.spec
 
 def upload(f, fs, channel, access):
+    logging.info("Uploading video..")
     try:
         fid = fs.put(f)
     except Exception as err:
+        logging.error(err)
         return "internal server error", 500
     
     message = {
@@ -24,8 +26,9 @@ def upload(f, fs, channel, access):
                 delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
             )
         )
-    except:
+    except Exception as err:
         fs.delete(fid)
+        logging.error(err)
         return "internal server error", 500
     
     
